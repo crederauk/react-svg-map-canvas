@@ -6,10 +6,10 @@ import { ColorDef, LineDef, TransitProps } from './types'
 import * as Styled from './styles'
 
 interface MapCanvasProps {
-  canvasWidth?: number,
-  canvasHeight?: number,
-  width?: number,
-  height?: number,
+  canvasWidth?: string | number,
+  canvasHeight?: string | number,
+  width?: string | number,
+  height?: string | number,
   controls?: ({ zoomIn, zoomOut, resetTransform }: Pick<ReactZoomPanPinchHandlers, 'zoomIn' | 'zoomOut' | 'resetTransform'>) => JSX.Element,
   colors?: ColorDef,
   concreteGroundPaths?: LineDef[],
