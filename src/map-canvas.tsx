@@ -6,6 +6,8 @@ import { ColorDef, LineDef, TransitProps } from './types'
 import * as Styled from './styles'
 
 interface MapCanvasProps {
+  canvasWidth?: number,
+  canvasHeight?: number,
   width?: number,
   height?: number,
   controls?: ({ zoomIn, zoomOut, resetTransform }: Pick<ReactZoomPanPinchHandlers, 'zoomIn' | 'zoomOut' | 'resetTransform'>) => JSX.Element,
@@ -37,6 +39,8 @@ export const objectValueGetter = (obj: { [x: string]: any }, path: string): any 
   path.split('.').reduce(objectValueGetterReducer, obj);
 
 export const MapCanvas: FC<MapCanvasProps> = ({
+  canvasWidth,
+  canvasHeight,
   width = 1200,
   height = 850,
   controls,
@@ -44,6 +48,13 @@ export const MapCanvas: FC<MapCanvasProps> = ({
   concreteGroundPaths,
   transits
 }) => {
+  if (canvasWidth === undefined) {
+    canvasWidth = width;
+  }
+  if (canvasHeight === undefined) {
+    canvasHeight = height;
+  }
+
   const [transitPathRefs, setTransitPathRefs] = useState<(SVGPathElement | null)[]>([]);
 
   const handleClick = (event: MouseEvent) => {
@@ -77,9 +88,9 @@ export const MapCanvas: FC<MapCanvasProps> = ({
         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
           <>
             <TransformComponent>
-              <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height}>
+              <svg viewBox={`0 0 ${canvasWidth} ${canvasHeight}`} width={width} height={height}>
                 {/* layer 0: da ocean */}
-                <rect x={0} y={0} width={width} height={height} fill={getColor('ocean.fill')} />
+                <rect x={0} y={0} width={canvasWidth} height={canvasHeight} fill={getColor('ocean.fill')} />
 
                 {/* layer 10: 'natural' ground */}
                 {/* layer 20: concrete ground */}
