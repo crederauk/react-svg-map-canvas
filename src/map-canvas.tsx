@@ -57,10 +57,10 @@ export const MapCanvas: FC<MapCanvasProps> = ({
 
   const [transitPathRefs, setTransitPathRefs] = useState<(SVGPathElement | null)[]>([]);
 
-  const handleClick = (event: MouseEvent) => {
-    console.log(event.pageX);
-    console.log(event.pageY);
-  }
+  // const handleClick = (event: MouseEvent) => {
+  //   console.log(event.pageX);
+  //   console.log(event.pageY);
+  // }
 
   const getColor = (path: string) => {
     return (colors ? objectValueGetter(colors, path) : undefined) || objectValueGetter(defaultColors, path)
@@ -68,15 +68,11 @@ export const MapCanvas: FC<MapCanvasProps> = ({
 
   const refSetter = (newRef: SVGPathElement | null, index: number) => {
     if (index >= transitPathRefs.length) {
-      console.log('x');
       setTransitPathRefs([...transitPathRefs, newRef]);
-    } else {
-      console.log('y');
-      if (newRef !== transitPathRefs[index]) {
-        const newRefs = [...transitPathRefs];
-        newRefs[index] = newRef;
-        setTransitPathRefs(newRefs);
-      }
+    } else if (newRef !== transitPathRefs[index]) {
+      const newRefs = [...transitPathRefs];
+      newRefs[index] = newRef;
+      setTransitPathRefs(newRefs);
     }
   }
 
@@ -195,7 +191,7 @@ export const MapCanvas: FC<MapCanvasProps> = ({
                     const ptOnPath = ref.getPointAtLength(pathLength * vehicle.location);
                     const angle = getAngleAtPathPt(ref, pathLength * vehicle.location);
                     return (
-                      <Styled.TransitVehicleContainer key={vehicle.location} transform={`rotate(${vehicle.direction === 'start' ? angle : angle})`}>
+                      <Styled.TransitVehicleContainer key={vehicle.location} transform={`rotate(${vehicle.direction === 'start' ? angle + 180 : angle})`}>
                         <circle cx={ptOnPath.x} cy={ptOnPath.y} r={4} fill="#777" stroke="#fff" strokeWidth={0.5} />
                         <text
                           x={ptOnPath.x + 0.2}
