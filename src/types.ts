@@ -1,8 +1,10 @@
-export type ColorDef = Record<string, {
+export type ColorDef = {
   fill?: string,
   stroke?: string,
   strokeWidth?: number,
-}>
+};
+
+export type ColorDefs = Record<string, ColorDef>
 
 export interface StraightSegment {
   mode: 'straight',
@@ -32,4 +34,5 @@ export interface TransitProps {
     location: number,
     direction: 'start' | 'end',
   }[],
+  color?: ColorDef,
 }

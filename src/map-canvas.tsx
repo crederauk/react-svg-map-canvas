@@ -2,7 +2,7 @@ import React, { EventHandler, FC, MouseEvent, MouseEventHandler, useEffect, useR
 import { ReactZoomPanPinchHandlers, TransformComponent, TransformWrapper } from '@pronestor/react-zoom-pan-pinch'
 import './styles'
 import { getAngleAtPathPt, intersect, lineToAngle, lineToPathDef } from './utils'
-import { ColorDef, LineDef, TransitProps } from './types'
+import { ColorDef, ColorDefs, LineDef, TransitProps } from './types'
 import * as Styled from './styles'
 
 interface MapCanvasProps {
@@ -11,19 +11,19 @@ interface MapCanvasProps {
   width?: string | number,
   height?: string | number,
   controls?: ({ zoomIn, zoomOut, resetTransform }: Pick<ReactZoomPanPinchHandlers, 'zoomIn' | 'zoomOut' | 'resetTransform'>) => JSX.Element,
-  colors?: ColorDef,
+  colors?: ColorDefs,
   concreteGroundPaths?: LineDef[],
   transits?: TransitProps[],
 }
 
-const defaultColors = {
+const defaultColors: ColorDefs = {
   ocean: {
     fill: '#9AC0F8',
   },
   concreteGround: {
     fill: '#F8F9FA',
   },
-  bakerloo: {
+  transit: {
     stroke: '#996633',
   },
 }
@@ -108,7 +108,7 @@ export const MapCanvas: FC<MapCanvasProps> = ({
                 {/* layer 60: buildings */}
                 {/* layer 70: transit */}
                 { transits?.map((transit, index) => (
-                  <path ref={(newRef) => refSetter(newRef, index)} d={lineToPathDef(transit.path)} fill="none" stroke={defaultColors.bakerloo.stroke} strokeWidth={3} />
+                  <path ref={(newRef) => refSetter(newRef, index)} d={lineToPathDef(transit.path)} fill="none" stroke={transit?.color?.stroke || getColor('transit.stroke')} strokeWidth={3} />
                 )) }
                 {/* layer 72: transit markings (stations, vehicle locations, etc.) */}
                 { transits?.map((transit, index) => {
@@ -124,21 +124,26 @@ export const MapCanvas: FC<MapCanvasProps> = ({
                     let labelPositionY = 0;
                     let labelTextAnchor = 'middle';
                     let labelDominantBaseline = 'middle';
+                    let transformOriginHorizontal;
                     if (labelPosition.includes('top')) {
                       labelPositionY = -5;
                       labelDominantBaseline = 'auto';
                       labelTextAnchor = 'start';
+                      transformOriginHorizontal = 'left';
                     } else if (labelPosition.includes('bottom')) {
                       labelPositionY = 5;
                       labelDominantBaseline = 'hanging';
                       labelTextAnchor = 'end';
+                      transformOriginHorizontal = 'right';
                     }
                     if (labelPosition.includes('left')) {
                       labelPositionX = -7;
                       labelTextAnchor = 'end';
+                      transformOriginHorizontal = 'right';
                     } else if (labelPosition.includes('right')) {
                       labelPositionX = 7;
                       labelTextAnchor = 'start';
+                      transformOriginHorizontal = 'left';
                     }
                     if (labelPosition === 'bottom-left') {
                       labelPositionX = -6;
@@ -149,7 +154,7 @@ export const MapCanvas: FC<MapCanvasProps> = ({
                       <React.Fragment key={station.location}>
                         <defs>
                           <linearGradient id="transitRegularStation" gradientTransform="rotate(90)">
-                            <stop offset="65%" stopColor={defaultColors.bakerloo.stroke} />
+                            <stop offset="65%" stopColor={transit?.color?.stroke || getColor('transit.stroke')} />
                             <stop offset="65%" stopColor="transparent" />
                           </linearGradient>
                         </defs>
@@ -173,6 +178,7 @@ export const MapCanvas: FC<MapCanvasProps> = ({
                             dominantBaseline={labelDominantBaseline}
                             fontSize={6}
                             transform="rotate(-25)"
+                            transformOrigin={`${transformOriginHorizontal} center`}
                           >
                             {station.label}
                           </Styled.TransitStationLabelText>

@@ -5,9 +5,13 @@ export const TransitRegularStation = styled.rect`
   transform-origin: center center;
 `;
 
-export const TransitStationLabelText = styled.text`
+interface TransitStationLabelTextProps {
+  transformOrigin: string;
+}
+
+export const TransitStationLabelText = styled.text<TransitStationLabelTextProps>`
   transform-box: fill-box;
-  transform-origin: right center;
+  transform-origin: ${({ transformOrigin }) => transformOrigin };
 `;
 
 export const TransitVehicleContainer = styled.g`
