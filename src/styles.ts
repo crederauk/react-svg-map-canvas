@@ -22,6 +22,8 @@ export const TransitVehicleContainer = styled.g`
 export const MapWrapper = styled.div`
   display: inline-block;
   position: relative;
+  width: 100%;
+  height: 100%;
 `;
 
 export const Controls = styled.div`

@@ -83,7 +83,7 @@ export const MapCanvas: FC<MapCanvasProps> = ({
       >
         {({ zoomIn, zoomOut, resetTransform, ...rest }) => (
           <>
-            <TransformComponent>
+            <TransformComponent wrapperStyle={{ width: '100%', height: '100%' }} contentStyle={{ width: '100%', height: '100%' }}>
               <svg viewBox={`0 0 ${canvasWidth} ${canvasHeight}`} width={width} height={height}>
                 {/* layer 0: da ocean */}
                 <rect x={0} y={0} width={canvasWidth} height={canvasHeight} fill={getColor('ocean.fill')} />
