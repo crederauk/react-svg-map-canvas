@@ -30,19 +30,21 @@ export interface TransitPath {
 export interface Station {
   id: string;
   label?: string,
-  labelPosition?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left',
-  interchange?: boolean,
+  labelPosition?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left';
+  interchange?: boolean;
   location: number;
   hidden?: boolean;
 }
 
 export interface TransitProps {
-  paths: TransitPath[],
-  stations?: Record<string, Station[]>,
+  paths: TransitPath[];
+  stations?: {
+    [pathId: string]: Station[];
+  },
   vehicles?: {
     pathId: string;
-    location: number,
-    direction: 'start' | 'end',
-  }[],
+    location: number;
+    direction: 'start' | 'end';
+  }[];
   color?: ColorDef,
 }
