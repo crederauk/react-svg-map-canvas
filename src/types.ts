@@ -22,17 +22,29 @@ export type LineDef = (StraightSegment | {
   mode: 'quadraticCurve',
 })[];
 
+export interface TransitPath {
+  id: string;
+  path: LineDef;
+}
+
+export interface Station {
+  id: string;
+  label?: string,
+  labelPosition?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left';
+  interchange?: boolean;
+  location: number;
+  hidden?: boolean;
+}
+
 export interface TransitProps {
-  path: LineDef,
+  paths: TransitPath[];
   stations?: {
-    location: number,
-    label?: string,
-    labelPosition?: 'top' | 'top-right' | 'right' | 'bottom-right' | 'bottom' | 'bottom-left' | 'left' | 'top-left',
-    interchange?: boolean,
-  }[],
+    [pathId: string]: Station[];
+  },
   vehicles?: {
-    location: number,
-    direction: 'start' | 'end',
-  }[],
+    pathId: string;
+    location: number;
+    direction: 'start' | 'end';
+  }[];
   color?: ColorDef,
 }
