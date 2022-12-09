@@ -41,6 +41,7 @@ export interface TransitProps {
   stations?: {
     [pathId: string]: Station[];
   },
+  stationLabelOnHover?: boolean;
   vehicles?: {
     pathId: string;
     location: number;
@@ -48,3 +49,6 @@ export interface TransitProps {
   }[];
   color?: ColorDef,
 }
+
+export type EventHandler = (payload: any) => void;
+export type EventHandlers = Record<string, EventHandler>;
